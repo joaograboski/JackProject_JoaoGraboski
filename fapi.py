@@ -13,9 +13,9 @@ app = FastAPI()
 
 class Pessoa(BaseModel):
     nome: str
-    datanasc: date  
+    datanasc: date  # 'date' é usado para garantir que a data será recebida sem a parte da hora
 
-# função para 'ignorar' o horário 
+# função para colocar o horário no mínimo (p/ignorar hora)
 def converter_data_para_datetime(data_nasc: date) -> datetime:
     return datetime.combine(data_nasc, datetime.min.time())
 
@@ -41,12 +41,16 @@ async def listar_pessoas():
 # Atualizar Pessoa do Cadastro
 @app.put("/pessoas/{pessoa_id}", response_model=Pessoa)
 async def atualizar_pessoa(pessoa_id: str, pessoa: Pessoa):
+    pessoa_dict = pessoa.dict()
+    if 'datanasc' in pessoa_dict:
+        pessoa_dict['datanasc'] = converter_data_para_datetime(pessoa.datanasc)
+
     result = collection.update_one(
-        {"_id": ObjectId(pessoa_id)}, {"$set": pessoa.dict()}  
+        {"_id": ObjectId(pessoa_id)}, {"$set": pessoa_dict}  
     )
     if result.matched_count == 0:
         raise HTTPException(status_code=404, detail="Essa pessoa não existe no cadastro")
-    pessoa_dict = pessoa.dict()
+    
     pessoa_dict["_id"] = pessoa_id 
     return pessoa_dict
 
