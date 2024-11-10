@@ -33,11 +33,15 @@ Criação de exceções usando 'HTTPException' e exibindo mensagens de erro.
 
 2.0. Tutorial de como rodar na sua máquina:
 
--Instalar Python (caso não esteja instalado na máquina)-
+- Instalar Python (caso não esteja instalado na máquina);
+
+- Baixar os arquivos do repositório;
+  
+- Extrair arquivos da pasta;
 
 1.Abrir o Prompt de Comando do computador (terminal);
 
--Comandos todos a serem executados dentro do terminal-
+-Comandos a serem executados dentro do terminal-
 
 2.Navegar até o diretório da pasta (adquirida do repositório):
 
@@ -63,6 +67,8 @@ uvicorn fapi:app --reload
 
 Após todos os passos anteriores, abrir esse endereço no navegador:
 http://127.0.0.1:8000/docs
+
+Tudo pronto para usar as funções nesse endereço!
 
 
 
