@@ -3,17 +3,21 @@ from pydantic import BaseModel
 from typing import List
 from bson import ObjectId
 from pymongo import MongoClient  
-from datetime import date  
+from datetime import datetime, date
 
 client = MongoClient("mongodb+srv://joaograboski07:2305Graboskii@cluster0.74inz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-db = client["API"]  # banco 
+db = client["API"]  # banco
 collection = db["JackAPI"]  # coleção
 
 app = FastAPI()
 
 class Pessoa(BaseModel):
     nome: str
-    datanasc: date  # Usando apenas a data (sem hora)
+    datanasc: date  
+
+# função para 'ignorar' o horário 
+def converter_data_para_datetime(data_nasc: date) -> datetime:
+    return datetime.combine(data_nasc, datetime.min.time())
 
 def serialize_id(pessoa):
     pessoa["_id"] = str(pessoa["_id"])  
@@ -23,7 +27,7 @@ def serialize_id(pessoa):
 @app.post("/pessoas", response_model=Pessoa)
 async def criar_pessoa(pessoa: Pessoa):
     pessoa_dict = pessoa.dict()
-    pessoa_dict['datanasc'] = datetime.combine(pessoa.datanasc, datetime.min.time())
+    pessoa_dict['datanasc'] = converter_data_para_datetime(pessoa.datanasc)
     result = collection.insert_one(pessoa_dict)  
     pessoa_dict["_id"] = str(result.inserted_id)  
     return pessoa_dict
