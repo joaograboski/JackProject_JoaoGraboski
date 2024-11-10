@@ -13,7 +13,7 @@ app = FastAPI()
 
 class Pessoa(BaseModel):
     nome: str
-    datanasc: date  # 'date' é usado para garantir que a data será recebida sem a parte da hora
+    datanasc: date  
 
 # função para colocar o horário no mínimo (p/ignorar hora)
 def converter_data_para_datetime(data_nasc: date) -> datetime:
