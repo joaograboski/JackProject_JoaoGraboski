@@ -20,6 +20,8 @@ Criação da classe de pessoa contendo os tipo requisitados: nome e data de nasc
 
 Transformação do ObjectID do MondoDB em string pra ser compatível com o código.
 
+Foi feita uma função para passar o tipo datetime para date para ser aceito no MongoDB. O MongoDB não lê o tipo date (sem o horário), assim foi convertido o tipo date para datetime (data com hora) de modo que as horas ficam no mínimo (zeradas).
+
 Criação das funções CRUD (com seus respectivos parâmetros):
 
 Funções que modificam o banco através de comandos NoSQL como insert_one, update_one, delete_one e .find().
